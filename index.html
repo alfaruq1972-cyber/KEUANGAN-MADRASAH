@@ -2,16 +2,43 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Dioptimasi untuk mobile: no zoom berlebih -->
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- iOS: Bisa diinstal sebagai app -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- iOS: Status bar transparan -->
+    <meta name="theme-color" content="#28a745"> <!-- Warna status bar hijau di mobile browser (Chrome/Android) -->
     <title>Login - Sistem Keuangan Madrasah</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS tambahan untuk mobile/smartphone (tanpa merubah existing) */
+        @media (max-width: 576px) {
+            .card {
+                margin: 10px; /* Padding ekstra di mobile */
+                border-radius: 15px; /* Sudut lebih bulat untuk touch */
+            }
+            .form-control, .btn {
+                font-size: 16px; /* Font lebih besar untuk mudah ketik di mobile */
+                padding: 12px; /* Padding lebih besar untuk touch target */
+            }
+            #loginError {
+                font-size: 14px; /* Error text lebih readable di layar kecil */
+            }
+            img.img-fluid {
+                max-width: 100%; /* Pastikan logo tidak overflow di mobile */
+                height: auto;
+            }
+        }
+        /* Smooth touch di mobile */
+        button, input {
+            touch-action: manipulation; /* Cegah delay klik di touch screen */
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
             <div class="text-center mb-4">
-                <img src="assets/logo.png" alt="Logo Madrasah" class="img-fluid mb-3" style="max-height: 80px;">
+                <img src="assets/logo.png" alt="Logo Madrasah" class="img-fluid mb-3" style="max-height: 80px; max-width: 100%; height: auto;"> <!-- Optimasi logo untuk mobile -->
                 <h3 class="text-success">Sistem Keuangan Madrasah</h3>
                 <p class="text-muted">Masuk sebagai Bendahara atau Kepala Madrasah</p>
             </div>
@@ -52,17 +79,18 @@
 
         // Inisialisasi setelah DOM siap
         document.addEventListener('DOMContentLoaded', function() {
-            // Cek jika sudah login (lakukan dulu untuk hindari flicker) - BUG FIXED: Ganti !== '' menjadi !== 'undefined'
+            // Cek jika sudah login (lakukan dulu untuk hindari flicker)
             if (typeof(Storage) !== 'undefined' && localStorage.getItem('loggedIn') === 'true') {
                 window.location.href = 'dashboard.html';
                 return; // Hentikan eksekusi lebih lanjut
             }
 
-            // Event listener untuk form submit
+            // Event listener untuk form submit (optimasi mobile: prevent default zoom/scroll)
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
                     e.preventDefault();
+                    e.stopPropagation(); // Optimasi mobile: Cegah scroll aneh saat submit
                     hideError(); // Reset error sebelum validasi baru
 
                     const usernameInput = document.getElementById('username');
@@ -73,7 +101,7 @@
                     }
 
                     const username = usernameInput.value.trim();
-                    const password = passwordInput.value.trim(); // BUG FIXED: Tambah trim() pada password juga
+                    const password = passwordInput.value.trim();
 
                     // Validasi dasar (kosong)
                     if (!username || !password) {
@@ -93,6 +121,19 @@
                 });
             } else {
                 console.error('Form login tidak ditemukan. Periksa ID di HTML.');
+            }
+
+            // Optimasi mobile: Sembunyikan error saat user fokus ke input (keyboard muncul)
+            const inputs = document.querySelectorAll('#username, #password');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    hideError(); // Hilangkan error saat mengetik di mobile
+                });
+            });
+
+            // Optimasi mobile: Cegah zoom saat input focus (untuk iOS/Android)
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent) || /Android/.test(navigator.userAgent)) {
+                document.addEventListener('touchstart', function() {}, true);
             }
         });
     </script>

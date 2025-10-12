@@ -1,7 +1,7 @@
 // Inisialisasi aplikasi
 document.addEventListener('DOMContentLoaded', function() {
     // Cek login
-    if (typeof(Storage) === 'undefined' || localStorage.getItem('loggedIn') !== 'true') {
+    if (typeof(Storage) === '' || localStorage.getItem('loggedIn') !== 'true') {
         window.location.href = 'index.html';
         return;
     }
@@ -342,5 +342,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Default tanggal hari ini
         document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+
+        // Fungsi reset data (ditambahkan baru tanpa merubah kode existing)
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('Yakin reset semua data transaksi? Data tidak bisa dikembalikan!')) {
+                transaksi = []; // Kosongkan array transaksi
+                filteredData = []; // Kosongkan filtered data
+                localStorage.removeItem('transaksi'); // Hapus dari localStorage
+                renderTabel(filteredData); // Update tabel kosong
+                hitungRingkasan(filteredData); // Update ringkasan ke 0
+                updateGrafik(filteredData); // Update grafik kosong
+                updateFilter(transaksi); // Update filter kosong
+                alert('Data berhasil direset!');
+            }
+        });
     }
 });

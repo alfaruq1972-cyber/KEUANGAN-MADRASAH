@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "jenis": "pemasukan",
+    "kategori": "BOS",
+    "deskripsi": "Dana BOS Januari 2024",
+    "jumlah": 5000000,
+    "tanggal": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "jenis": "pengeluaran",
+    "kategori": "SPP",
+    "deskripsi": "Pembelian buku pelajaran",
+    "jumlah": 1000000,
+    "tanggal": "2024-01-20"
+  },
+  {
+    "id": 3,
+    "jenis": "pemasukan",
+    "kategori": "Infaq",
+    "deskripsi": "Infaq dari orang tua",
+    "jumlah": 2000000,
+    "tanggal": "2024-02-05"
+  }
+]

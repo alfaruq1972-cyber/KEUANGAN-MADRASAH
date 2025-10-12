@@ -36,47 +36,64 @@
         // Fungsi untuk menampilkan error
         function showError(message) {
             const errorDiv = document.getElementById('loginError');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
         }
 
         // Fungsi untuk menyembunyikan error
         function hideError() {
-            document.getElementById('loginError').style.display = 'none';
+            const errorDiv = document.getElementById('loginError');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
         }
 
         // Inisialisasi setelah DOM siap
         document.addEventListener('DOMContentLoaded', function() {
-            // Cek jika sudah login (lakukan dulu untuk hindari flicker)
+            // Cek jika sudah login (lakukan dulu untuk hindari flicker) - BUG FIXED: Ganti !== '' menjadi !== 'undefined'
             if (typeof(Storage) !== 'undefined' && localStorage.getItem('loggedIn') === 'true') {
                 window.location.href = 'dashboard.html';
                 return; // Hentikan eksekusi lebih lanjut
             }
 
             // Event listener untuk form submit
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                hideError(); // Reset error sebelum validasi baru
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    hideError(); // Reset error sebelum validasi baru
 
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value;
-
-                // Validasi dasar (kosong)
-                if (!username || !password) {
-                    showError('Username dan password harus diisi!');
-                    return;
-                }
-
-                // Validasi kredensial (demo hardcoded)
-                if (username === 'bendahara' && password === 'madrasah123') {
-                    if (typeof(Storage) !== 'undefined') {
-                        localStorage.setItem('loggedIn', 'true');
+                    const usernameInput = document.getElementById('username');
+                    const passwordInput = document.getElementById('password');
+                    if (!usernameInput || !passwordInput) {
+                        showError('Elemen form tidak ditemukan. Refresh halaman.');
+                        return;
                     }
-                    window.location.href = 'dashboard.html';
-                } else {
-                    showError('Username atau password salah!');
-                }
-            });
+
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim(); // BUG FIXED: Tambah trim() pada password juga
+
+                    // Validasi dasar (kosong)
+                    if (!username || !password) {
+                        showError('Username dan password harus diisi!');
+                        return;
+                    }
+
+                    // Validasi kredensial (demo hardcoded)
+                    if (username === 'bendahara' && password === 'madrasah123') {
+                        if (typeof(Storage) !== 'undefined') {
+                            localStorage.setItem('loggedIn', 'true');
+                        }
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        showError('Username atau password salah!');
+                    }
+                });
+            } else {
+                console.error('Form login tidak ditemukan. Periksa ID di HTML.');
+            }
         });
     </script>
 </body>

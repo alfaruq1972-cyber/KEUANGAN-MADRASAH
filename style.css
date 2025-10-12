@@ -1,0 +1,46 @@
+body {
+    background-color: #F0FFF0 !important; /* Hijau pastel */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.text-success {
+    color: #28a745 !important;
+}
+
+.btn-success {
+    background-color: #90EE90;
+    border-color: #90EE90;
+}
+
+.btn-success:hover {
+    background-color: #7CFC00;
+    border-color: #7CFC00;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.table-success {
+    background-color: #90EE90 !important;
+}
+
+.shadow {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+
+.fas {
+    color: #28a745;
+}
+
+/* Responsif Tambahan */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .row > div {
+        margin-bottom: 15px;
+    }
+}

@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Fungsi ekspor ke Excel menggunakan SheetJS
+    // Fungsi ekspor ke Excel menggunakan SheetJS (hanya untuk manual)
     function eksporExcel(data, filename = null) {
         const ws = XLSX.utils.json_to_sheet(data.map(t => ({
             Tanggal: new Date(t.tanggal).toLocaleDateString('id-ID'),
@@ -235,9 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
             hitungRingkasan(filteredData);
             updateGrafik(filteredData);
             updateFilter(transaksi);
-
-            // Ekspor otomatis
-            eksporExcel(transaksi, `laporan_otomatis_${new Date().toISOString().split('T')[0]}.xlsx`);
 
             // Reset form
             this.reset();
@@ -306,8 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     hitungRingkasan(filteredData);
                     updateGrafik(filteredData);
                     updateFilter(transaksi);
-                    // Ekspor otomatis setelah hapus
-                    eksporExcel(transaksi, `laporan_setelah_hapus_${new Date().toISOString().split('T')[0]}.xlsx`);
                     alert('Transaksi berhasil dihapus!');
                 }
             }
@@ -332,8 +327,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderTabel(filteredData);
                 hitungRingkasan(filteredData);
                 updateGrafik(filteredData);
-                // Ekspor otomatis setelah edit
-                eksporExcel(transaksi, `laporan_setelah_edit_${new Date().toISOString().split('T')[0]}.xlsx`);
                 bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
                 alert('Transaksi berhasil diupdate!');
             }

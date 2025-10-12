@@ -1,26 +1,82 @@
 [
   {
-    "id": 1,
+    "id": "1a2b3c4d",
+    "tanggal": "2024-01-05",
+    "jenis": "pemasukan",
+    "kategori": "SPP Siswa",
+    "jumlah": 5000000,
+    "deskripsi": "Pembayaran SPP Januari dari 50 siswa"
+  },
+  {
+    "id": "2b3c4d5e",
+    "tanggal": "2024-01-10",
     "jenis": "pemasukan",
     "kategori": "BOS",
-    "deskripsi": "Dana BOS Januari 2024",
-    "jumlah": 5000000,
-    "tanggal": "2024-01-15"
+    "jumlah": 15000000,
+    "deskripsi": "Dana Bantuan Operasional Sekolah (BOS) triwulan 1"
   },
   {
-    "id": 2,
+    "id": "3c4d5e6f",
+    "tanggal": "2024-01-15",
     "jenis": "pengeluaran",
-    "kategori": "SPP",
-    "deskripsi": "Pembelian buku pelajaran",
-    "jumlah": 1000000,
-    "tanggal": "2024-01-20"
+    "kategori": "Gaji Guru",
+    "jumlah": 8000000,
+    "deskripsi": "Gaji pokok guru dan staf Januari"
   },
   {
-    "id": 3,
+    "id": "4d5e6f7g",
+    "tanggal": "2024-01-20",
+    "jenis": "pengeluaran",
+    "kategori": "Listrik & Air",
+    "jumlah": 1200000,
+    "deskripsi": "Tagihan utilitas madrasah bulan Januari"
+  },
+  {
+    "id": "5e6f7g8h",
+    "tanggal": "2024-02-02",
     "jenis": "pemasukan",
-    "kategori": "Infaq",
-    "deskripsi": "Infaq dari orang tua",
+    "kategori": "Donasi",
     "jumlah": 2000000,
-    "tanggal": "2024-02-05"
+    "deskripsi": "Donasi dari orang tua untuk kegiatan ekstrakurikuler"
+  },
+  {
+    "id": "6f7g8h9i",
+    "tanggal": "2024-02-12",
+    "jenis": "pengeluaran",
+    "kategori": "Alat Tulis",
+    "jumlah": 500000,
+    "deskripsi": "Pembelian buku dan alat tulis untuk siswa"
+  },
+  {
+    "id": "7g8h9i0j",
+    "tanggal": "2024-02-18",
+    "jenis": "pemasukan",
+    "kategori": "SPP Siswa",
+    "jumlah": 4800000,
+    "deskripsi": "Pembayaran SPP Februari (sebagian siswa telat)"
+  },
+  {
+    "id": "8h9i0j1k",
+    "tanggal": "2024-03-01",
+    "jenis": "pemasukan",
+    "kategori": "BOS",
+    "jumlah": 12000000,
+    "deskripsi": "Dana BOS tambahan untuk program pendidikan"
+  },
+  {
+    "id": "9i0j1k2l",
+    "tanggal": "2024-03-08",
+    "jenis": "pengeluaran",
+    "kategori": "Perawatan Gedung",
+    "jumlah": 3000000,
+    "deskripsi": "Renovasi ruang kelas dan toilet"
+  },
+  {
+    "id": "0j1k2l3m",
+    "tanggal": "2024-03-15",
+    "jenis": "pengeluaran",
+    "kategori": "Gaji Guru",
+    "jumlah": 8500000,
+    "deskripsi": "Gaji Maret termasuk tunjangan kinerja"
   }
 ]

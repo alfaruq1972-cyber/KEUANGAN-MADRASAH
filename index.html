@@ -39,7 +39,7 @@
         <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
             <div class="text-center mb-4">
                 <img src="assets/logo.png" alt="Logo Madrasah" class="img-fluid mb-3" style="max-height: 80px; max-width: 100%; height: auto;"> <!-- Optimasi logo untuk mobile -->
-                <h3 class="text-success">Sistem Keuangan Madrasah</h3>
+                <h3 class="text-success">Sistem Keuangan Madrasah Ibtidaiyah Salafiyah Koro</h3>
                 <p class="text-muted">Masuk sebagai Bendahara atau Kepala Madrasah</p>
             </div>
             <form id="loginForm">
@@ -51,7 +51,7 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" autocomplete="off" required>
                 </div>
-                <button type="submit" class="btn btn-success w-100">Masuk</button>
+                <button type="submit" class="btn btn-success w-100" id="submitBtn">Masuk</button>
             </form>
             <div id="loginError" class="alert alert-danger mt-3" style="display: none;"></div>
         </div>
@@ -77,26 +77,67 @@
             }
         }
 
+        // Fungsi helper untuk akses localStorage dengan try-catch (mencegah error loop)
+        function getStoredItem(key) {
+            try {
+                if (typeof(Storage) !== "undefined" && localStorage) {
+                    return localStorage.getItem(key);
+                }
+                return null;
+            } catch (e) {
+                console.warn('localStorage tidak tersedia:', e);
+                return null;
+            }
+        }
+
+        function setStoredItem(key, value) {
+            try {
+                if (typeof(Storage) !== "undefined" && localStorage) {
+                    localStorage.setItem(key, value);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.warn('Gagal simpan ke localStorage:', e);
+                return false;
+            }
+        }
+
         // Inisialisasi setelah DOM siap
         document.addEventListener('DOMContentLoaded', function() {
-            // Cek jika sudah login (lakukan dulu untuk hindari flicker)
-            if (typeof(Storage) !== 'undefined' && localStorage.getItem('loggedIn') === 'true') {
-                window.location.href = 'dashboard.html';
+            // Cek jika sudah login (diperbaiki: gunakan kondisi benar untuk hindari loop redirect)
+            const isLoggedIn = getStoredItem('loggedIn') === 'true';
+            if (isLoggedIn) {
+                // Tambahkan delay kecil untuk memastikan storage sync (hindari race condition di mobile)
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 10);
                 return; // Hentikan eksekusi lebih lanjut
             }
 
-            // Event listener untuk form submit (optimasi mobile: prevent default zoom/scroll)
+            // Guard untuk event listener (hindari duplikasi jika script.js punya yang serupa)
             const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
+            let submitHandlerAdded = false;
+            if (loginForm && !submitHandlerAdded) {
+                submitHandlerAdded = true;
+                let isSubmitting = false; // Debounce untuk mencegah submit berulang di mobile
+
                 loginForm.addEventListener('submit', function(e) {
+                    if (isSubmitting) return; // Cegah multiple submit
                     e.preventDefault();
                     e.stopPropagation(); // Optimasi mobile: Cegah scroll aneh saat submit
                     hideError(); // Reset error sebelum validasi baru
+
+                    isSubmitting = true;
+                    const submitBtn = document.getElementById('submitBtn');
+                    if (submitBtn) submitBtn.disabled = true; // Disable button sementara
 
                     const usernameInput = document.getElementById('username');
                     const passwordInput = document.getElementById('password');
                     if (!usernameInput || !passwordInput) {
                         showError('Elemen form tidak ditemukan. Refresh halaman.');
+                        isSubmitting = false;
+                        if (submitBtn) submitBtn.disabled = false;
                         return;
                     }
 
@@ -106,20 +147,31 @@
                     // Validasi dasar (kosong)
                     if (!username || !password) {
                         showError('Username dan password harus diisi!');
+                        isSubmitting = false;
+                        if (submitBtn) submitBtn.disabled = false;
                         return;
                     }
 
                     // Validasi kredensial (demo hardcoded)
                     if (username === 'bendahara' && password === 'madrasah123') {
-                        if (typeof(Storage) !== 'undefined') {
-                            localStorage.setItem('loggedIn', 'true');
+                        const storageSet = setStoredItem('loggedIn', 'true');
+                        if (storageSet) {
+                            // Delay kecil sebelum redirect untuk sync
+                            setTimeout(() => {
+                                window.location.href = 'dashboard.html';
+                            }, 100);
+                        } else {
+                            showError('Gagal menyimpan sesi login. Coba lagi atau nonaktifkan mode privat browser.');
+                            isSubmitting = false;
+                            if (submitBtn) submitBtn.disabled = false;
                         }
-                        window.location.href = 'dashboard.html';
                     } else {
                         showError('Username atau password salah!');
+                        isSubmitting = false;
+                        if (submitBtn) submitBtn.disabled = false;
                     }
                 });
-            } else {
+            } else if (!loginForm) {
                 console.error('Form login tidak ditemukan. Periksa ID di HTML.');
             }
 

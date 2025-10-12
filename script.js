@@ -188,8 +188,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Fungsi ekspor ke Excel menggunakan SheetJS (hanya untuk manual)
+    // Fungsi ekspor ke Excel menggunakan SheetJS (HANYA UNTUK MANUAL - TIDAK OTOMATIS)
     function eksporExcel(data, filename = null) {
+        console.log('Ekspor Excel dipanggil (manual)'); // Debug log
         const ws = XLSX.utils.json_to_sheet(data.map(t => ({
             Tanggal: new Date(t.tanggal).toLocaleDateString('id-ID'),
             Jenis: t.jenis,
@@ -205,9 +206,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Setup event listeners
     function setupEventListeners() {
-        // Form tambah transaksi
+        // Form tambah transaksi (TIDAK ADA EKSPOR OTOMATIS)
         document.getElementById('transaksiForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form tambah transaksi disubmit'); // Debug log
             const tanggal = document.getElementById('tanggal').value;
             const jenis = document.getElementById('jenis').value;
             const kategori = document.getElementById('kategori').value.trim();
@@ -240,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.reset();
             document.getElementById('tanggal').value = new Date().toISOString().split('T')[0]; // Default hari ini
             alert('Transaksi berhasil ditambahkan!');
+            // TIDAK ADA EKSPOR DI SINI - SUDAH DIHAPUS
         });
 
         // Clear form
@@ -267,8 +270,9 @@ document.addEventListener('DOMContentLoaded', function() {
             location.reload();
         });
 
-        // Download Excel manual
+        // Download Excel manual (SAJA YANG MEMANGGIL EKSPOR)
         document.getElementById('exportBtn').addEventListener('click', function() {
+            console.log('Tombol ekspor manual diklik'); // Debug log
             eksporExcel(filteredData);
             alert('Laporan Excel berhasil diunduh!');
         });
@@ -279,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'index.html';
         });
 
-        // Event delegation untuk edit dan hapus (karena tabel dynamic)
+        // Event delegation untuk edit dan hapus (TIDAK ADA EKSPOR OTOMATIS)
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('edit-btn')) {
                 const id = e.target.dataset.id;
@@ -295,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else if (e.target.classList.contains('hapus-btn')) {
                 if (confirm('Yakin hapus transaksi ini?')) {
+                    console.log('Transaksi dihapus'); // Debug log
                     const id = e.target.dataset.id;
                     transaksi = transaksi.filter(t => t.id !== id);
                     simpanData();
@@ -304,13 +309,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     updateGrafik(filteredData);
                     updateFilter(transaksi);
                     alert('Transaksi berhasil dihapus!');
+                    // TIDAK ADA EKSPOR DI SINI - SUDAH DIHAPUS
                 }
             }
         });
 
-        // Form edit
+        // Form edit (TIDAK ADA EKSPOR OTOMATIS)
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form edit disubmit'); // Debug log
             const id = document.getElementById('editId').value;
             const index = transaksi.findIndex(t => t.id === id);
             if (index !== -1) {
@@ -329,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateGrafik(filteredData);
                 bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
                 alert('Transaksi berhasil diupdate!');
+                // TIDAK ADA EKSPOR DI SINI - SUDAH DIHAPUS
             }
         });
 
